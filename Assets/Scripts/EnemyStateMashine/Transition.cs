@@ -10,7 +10,7 @@ public abstract class Transition : MonoBehaviour
 
     public State TargetState => _targetState;
 
-    public bool NeedTransit { get; private set; }
+    public bool NeedTransit { get; protected set; }
 
     private void OnEnable()
     {

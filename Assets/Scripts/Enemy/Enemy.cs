@@ -7,17 +7,19 @@ using UnityEngine.EventSystems;
 public class Enemy : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private float _health;
-    [SerializeField] private float _speed;
-    [SerializeField] private Player _player;
+    [SerializeField] private float _damage;
+    [SerializeField] private int _experience;
+    
+    public Player Target { get; private set; }
 
-    private UnityAction _dying;
-    private UnityAction _move;
+    private UnityAction _died;
+    private UnityAction _attacking;
     private UnityAction _tookDamage;
 
-    public event UnityAction OnDying
+    public event UnityAction OnDied
     {
-        add => _dying += value;
-        remove => _dying -= value;
+        add => _died += value;
+        remove => _died -= value;
     }
 
     public event UnityAction OnTookDamage
@@ -29,7 +31,17 @@ public class Enemy : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         if (_health > 0)
-            _player.Attack(transform);
+            Target.Attack(transform);
+    }
+
+    public void InitializeTarget(Player target)
+    {
+        Target = target;
+    }
+
+    public void Attack()
+    {
+        Target.TakeDamage(_damage);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -45,7 +57,8 @@ public class Enemy : MonoBehaviour, IPointerClickHandler
 
         if (_health <= 0)
         {
-            _dying?.Invoke();
+            _died?.Invoke();
+            Target.GainExperience(_experience);
             StartCoroutine(Destroyer());
         }
     }

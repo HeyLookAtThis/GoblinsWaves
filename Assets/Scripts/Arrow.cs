@@ -8,16 +8,18 @@ public class Arrow : MonoBehaviour
 
     public float Damage => _damage;
 
-    public void Shoot(float forse, Transform enemy)
+    public void Fly(float forse, Transform enemy)
     {
-        StartCoroutine(Shot(forse, enemy));
+        StartCoroutine(FlyingTowardsEnemy(forse, enemy));
     }
 
-    private IEnumerator Shot(float forse, Transform enemy)
+    private IEnumerator FlyingTowardsEnemy(float forse, Transform enemy)
     {
         float second = 0.01f;
 
         var waitTime = new WaitForSeconds(second);
+
+        transform.up = -enemy.position;
 
         while (transform.position != enemy.position)
         {

@@ -12,6 +12,6 @@ public static class ACPlayer
 
     public static class Params
     {
-
+        public const string Shot = nameof(Shot);
     }
 }

@@ -17,16 +17,16 @@ public class PlayerAnimator : MonoBehaviour
 
     private void OnEnable()
     {
-        _player.OnAttacking += PlayAttack;
+        _player.OnAttacking += SetShotTrigger;
     }
 
     private void OnDisable()
     {
-        _player.OnAttacking -= PlayAttack;
+        _player.OnAttacking -= SetShotTrigger;
     }
 
-    private void PlayAttack()
+    private void SetShotTrigger()
     {
-        _animator.Play(ACPlayer.State.Shot);
+        _animator.SetTrigger(ACPlayer.Params.Shot);
     }
 }

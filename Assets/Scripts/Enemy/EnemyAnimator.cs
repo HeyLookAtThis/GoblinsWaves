@@ -22,13 +22,13 @@ public class EnemyAnimator : MonoBehaviour
     private void OnEnable()
     {
         _enemy.OnTookDamage += PlayTakeDamage;
-        _enemy.OnDying += PlayDying;
+        _enemy.OnDied += PlayDying;
     }
 
     private void OnDisable()
     {
         _enemy.OnTookDamage -= PlayTakeDamage;
-        _enemy.OnDying += PlayDying;
+        _enemy.OnDied += PlayDying;
     }
 
     private void PlayTakeDamage()
