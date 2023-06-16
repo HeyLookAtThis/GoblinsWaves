@@ -4,67 +4,55 @@ using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(Enemy))]
+[RequireComponent(typeof(MoveState))]
+[RequireComponent(typeof(AttackState))]
 public class EnemyAnimator : MonoBehaviour
 {
-    [SerializeField] private SkinnedMeshRenderer _skinnedMeshRenderer;
-
     private Animator _animator;
     private Enemy _enemy;
-
-    private Coroutine _colorChanger;
+    private MoveState _moveState;
+    private AttackState _attackState;
 
     private void Awake()
     {
         _animator = GetComponent<Animator>();
         _enemy = GetComponent<Enemy>();
+        _moveState = GetComponent<MoveState>();
     }
 
     private void OnEnable()
     {
+        _moveState.OnWalking += PlayWalk;
+        _enemy.OnAttacking += PlayAttack;
         _enemy.OnTookDamage += PlayTakeDamage;
         _enemy.OnDied += PlayDying;
     }
 
     private void OnDisable()
     {
+        _moveState.OnWalking -= PlayWalk;
+        _enemy.OnAttacking -= PlayAttack;
         _enemy.OnTookDamage -= PlayTakeDamage;
-        _enemy.OnDied += PlayDying;
+        _enemy.OnDied -= PlayDying;
+    }
+
+    private void PlayWalk(float speed)
+    {
+        _animator.SetFloat(ACSkeleton.Params.Speed, speed);
+    }
+
+    private void PlayAttack()
+    {
+        _animator.Play(ACSkeleton.State.Attack);
     }
 
     private void PlayTakeDamage()
     {
-        if(_colorChanger != null)
-            StopCoroutine(_colorChanger);
-
-        _colorChanger = StartCoroutine(DamageColorSetter());
+        _animator.Play(ACSkeleton.State.TakeDamage);
     }
 
     private void PlayDying()
     {
-        _animator.Play(ACGoblin.State.Die);
-    }
-
-    private IEnumerator DamageColorSetter()
-    {
-        float second = 0.1f;
-        float lifeTime = 0.3f;
-        float passedTime = 0;
-
-        var waitTime = new WaitForSeconds(second);
-
-        Color defaultColor = _skinnedMeshRenderer.material.color;
-        _skinnedMeshRenderer.material.color = Color.red;
-
-        while (passedTime < lifeTime)
-        {
-            passedTime += second;
-            yield return waitTime;
-        }
-
-        if(passedTime >=  lifeTime)
-        {
-            _skinnedMeshRenderer.material.color = defaultColor;
-            yield break;
-        }
+        _animator.Play(ACSkeleton.State.Death);
     }
 }

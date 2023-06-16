@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
-public class EnemySpawner : MonoBehaviour
+public class EnemySpawner : EnemyPool
 {
     [SerializeField] private List<Wave> _waves;
     [SerializeField] private Transform[] _spawnPoints;
@@ -14,9 +15,12 @@ public class EnemySpawner : MonoBehaviour
     private int _spawnedEnemiesCount;
     private float _timeAfterLastSpawn;
 
+    private List<int> _previousSpawnPoints = new List<int>();
+
     private void Start()
     {
         SetWave(_currentWaveNumber);
+        Initialize(_currentWave.Enemy);
     }
 
     private void Update()
@@ -26,28 +30,58 @@ public class EnemySpawner : MonoBehaviour
 
         _timeAfterLastSpawn += Time.deltaTime;
 
-        if(_timeAfterLastSpawn >= _currentWave.Delay)
+        if(_timeAfterLastSpawn >= _currentWave.DelayBetwenSpawn)
         {
-            InstantiateEnemy();
-            _spawnedEnemiesCount++;
-            _timeAfterLastSpawn = 0;
+            if (TryGetObject(out Enemy enemy))
+            {
+                SetEnemy(enemy, GetNextPosition());
+                _spawnedEnemiesCount++;
+                _timeAfterLastSpawn = 0;
+            }
         }
 
-        if(_spawnedEnemiesCount == _waves.Count)
+        if (_spawnedEnemiesCount == _currentWave.TotalAmountEnemies)
             _currentWave = null;
     }
 
-    private void InstantiateEnemy()
+    private Vector3 GetNextPosition()
     {
-        Vector3 position = _spawnPoints[Random.Range(0, _spawnPoints.Length)].position;
+        int index = Random.Range(0, _spawnPoints.Length);
+        bool isContinue = true;
 
-        Enemy enemy = Instantiate(_currentWave.Enemy, position, Quaternion.identity);
+        if(_previousSpawnPoints.Count == _spawnPoints.Length)
+        {
+            _previousSpawnPoints.Clear();
+            isContinue = false;
+        }
+
+        while(isContinue)
+        {
+            if (_previousSpawnPoints.Contains(index))
+            {
+                index = Random.Range(0, _spawnPoints.Length);
+            }
+            else
+            {
+                isContinue = false;
+                _previousSpawnPoints.Add(index);
+            }
+        }
+
+        return _spawnPoints[index].position;
+    }
+
+    private void SetEnemy(Enemy enemy, Vector3 position)
+    {
+        enemy.gameObject.SetActive(true);
         enemy.InitializeTarget(_target);
+        enemy.transform.position = position;
     }
 
     private void SetWave(int index)
     {
         _currentWave = _waves[index];
+        SetCapacity(_currentWave.AmountEnemiesOnScene);
     }
 }
 
@@ -55,6 +89,7 @@ public class EnemySpawner : MonoBehaviour
 public class Wave
 {
     public Enemy Enemy;
-    public float Delay;
-    public int Count;
+    public float DelayBetwenSpawn;
+    public int TotalAmountEnemies;
+    public int AmountEnemiesOnScene;
 }

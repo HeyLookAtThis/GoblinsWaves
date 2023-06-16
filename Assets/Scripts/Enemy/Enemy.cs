@@ -9,17 +9,31 @@ public class Enemy : MonoBehaviour, IPointerClickHandler
     [SerializeField] private float _health;
     [SerializeField] private float _damage;
     [SerializeField] private int _experience;
-    
+    [SerializeField] private Transform _spellTarget;
+
+    public float Health => _health;
+
     public Player Target { get; private set; }
 
     private UnityAction _died;
     private UnityAction _attacking;
     private UnityAction _tookDamage;
 
+    private void FixedUpdate()
+    {
+        LookAtTarget();
+    }
+
     public event UnityAction OnDied
     {
         add => _died += value;
         remove => _died -= value;
+    }
+
+    public event UnityAction OnAttacking
+    {
+        add => _attacking += value;
+        remove => _attacking -= value;
     }
 
     public event UnityAction OnTookDamage
@@ -30,8 +44,7 @@ public class Enemy : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (_health > 0)
-            Target.Attack(transform);
+        Target.Attack(_spellTarget);
     }
 
     public void InitializeTarget(Player target)
@@ -41,29 +54,33 @@ public class Enemy : MonoBehaviour, IPointerClickHandler
 
     public void Attack()
     {
+        _attacking?.Invoke();
         Target.TakeDamage(_damage);
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void TakeDamage(float damage)
     {
-        if (other.TryGetComponent<Arrow>(out Arrow arrow))
-            TakeDamage(arrow.Damage);
-    }
-
-    private void TakeDamage(float damage)
-    {
-        _health -= damage;
-        _tookDamage?.Invoke();
-
+        if (_health > 0)
+        {
+            _health -= damage;
+            _tookDamage?.Invoke();
+        }
+        
         if (_health <= 0)
         {
             _died?.Invoke();
             Target.GainExperience(_experience);
-            StartCoroutine(Destroyer());
+            StartCoroutine(Deactivator());
         }
     }
 
-    private IEnumerator Destroyer()
+    private void LookAtTarget()
+    {
+        Vector3 targetDirection = Target.transform.position - transform.position;
+        transform.forward = targetDirection;
+    }
+
+    private IEnumerator Deactivator()
     {
         float second = 1.0f;
         var waitTime = new WaitForSeconds(second);
@@ -77,7 +94,7 @@ public class Enemy : MonoBehaviour, IPointerClickHandler
 
         if (isSkeppedTime)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
             yield break;
         }
     }

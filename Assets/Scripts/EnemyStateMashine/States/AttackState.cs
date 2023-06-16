@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Enemy))]
 public class AttackState : State
@@ -13,7 +14,7 @@ public class AttackState : State
     private void Start()
     {
         _enemy = GetComponent<Enemy>();
-        _lastAttackTime = _delay;
+        _lastAttackTime = _delay;        
     }
 
     private void Update()

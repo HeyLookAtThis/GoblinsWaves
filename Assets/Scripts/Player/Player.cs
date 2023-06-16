@@ -7,9 +7,8 @@ using static UnityEngine.GraphicsBuffer;
 public class Player : MonoBehaviour
 {
     [SerializeField] private float _health;
-    [SerializeField] private Arrow _arrow;
+    [SerializeField] private Spell _arrow;
     [SerializeField] private Transform _handForArrow;
-    [SerializeField] private float _shootSpeed;
 
     public float Experience { get; private set; } = 0;
 
@@ -51,7 +50,7 @@ public class Player : MonoBehaviour
     {
         _attacking?.Invoke();
         RotateToEnemy(enemy);
-        ShootArrow(enemy);
+        ShootSpell(enemy);
     }
 
     public void GainExperience(float experience)
@@ -62,16 +61,13 @@ public class Player : MonoBehaviour
     private void RotateToEnemy(Transform target)
     {
         Vector3 targetDirection = target.position - transform.position;
-        Vector3 foreward = transform.forward;
-        float angle = Vector3.SignedAngle(targetDirection, foreward, Vector3.up);
-        angle *= -1;
-        transform.Rotate(Vector3.up, angle, Space.World);
-        transform.rotation = Quaternion.identity;
+        targetDirection.y = 0;
+        transform.forward = targetDirection;
     }
 
-    private void ShootArrow(Transform enemy)
+    private void ShootSpell(Transform target)
     {
-        Arrow arrow = Instantiate(_arrow, _handForArrow.position, Quaternion.identity);
-        arrow.Fly(_shootSpeed, enemy);
+        Spell spell = Instantiate(_arrow, _handForArrow.position, Quaternion.identity);
+        spell.Fly(target);
     }
 }
