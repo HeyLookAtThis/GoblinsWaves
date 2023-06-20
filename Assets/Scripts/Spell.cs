@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Spell : MonoBehaviour
 {
-    [SerializeField] private float _damage;
+    [SerializeField] private float _manaCost;
     [SerializeField] private float _flyingSpeed;
+
+    public float ManaCost => _manaCost;
 
     public void Fly(Transform enemy)
     {
@@ -16,12 +18,15 @@ public class Spell : MonoBehaviour
     {
         if (other.TryGetComponent<Enemy>(out Enemy enemy))
         {
-            enemy.TakeDamage(_damage);
+            if (enemy.Attacked == false)
+                enemy.Die();
+
+            enemy.SetAttacked(true);
             Destroy(gameObject);
         }
     }
 
-    private IEnumerator FlyingTowardsEnemy(Transform enemy)
+    private IEnumerator FlyingTowardsEnemy(Transform target)
     {
         float second = 0.01f;
 
@@ -29,15 +34,14 @@ public class Spell : MonoBehaviour
 
         while (true)
         {
-            if(enemy == null || transform.position == enemy.position)
+            if(transform.position == target.position)
             {
                 Destroy(gameObject);
                 yield break;
             }
-
-            if (transform.position != enemy.position)
+            else
             {
-                transform.position = Vector3.MoveTowards(transform.position, enemy.position, _flyingSpeed * second);
+                transform.position = Vector3.MoveTowards(transform.position, target.position, _flyingSpeed * second);
                 yield return waitTime;
             }
         }

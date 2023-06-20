@@ -30,7 +30,7 @@ public class DeathAttack : MonoBehaviour
 
         if (Vector3.Distance(transform.position, _enemy.Target.transform.position) <= _disappearanceDistance)
         {
-            _enemy.Attack();
+            _enemy.TryAttack();
             gameObject.SetActive(false);
         }
     }

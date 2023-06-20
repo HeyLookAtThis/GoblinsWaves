@@ -11,7 +11,5 @@ public class FromLowDistanceTransitionn : Transition
     {
         if (Vector3.Distance(transform.position, Target.transform.position) > _distance)
             NeedTransit = true;
-
-        Debug.Log(Vector3.Distance(transform.position, Target.transform.position));
     }
 }

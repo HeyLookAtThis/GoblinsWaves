@@ -10,7 +10,9 @@ public class ACSkeleton : MonoBehaviour
         public const string Walk = nameof(Walk);
         public const string Death = nameof(Death);
         public const string Attack = nameof(Attack);
-        public const string TakeDamage = nameof(TakeDamage);
+        public const string CelebrateFirst = nameof(CelebrateFirst);
+        public const string CelebrateSecond = nameof(CelebrateSecond);
+        public const string CelebrateThird = nameof(CelebrateThird);
     }
 
     public static class Params

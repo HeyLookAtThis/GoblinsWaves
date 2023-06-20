@@ -6,18 +6,21 @@ using UnityEngine.EventSystems;
 
 public class Enemy : MonoBehaviour, IPointerClickHandler
 {
-    [SerializeField] private float _health;
     [SerializeField] private float _damage;
-    [SerializeField] private int _experience;
+    [SerializeField] private int _reward;
     [SerializeField] private Transform _spellTarget;
 
-    public float Health => _health;
+    public bool Attacked { get; private set; }
 
     public Player Target { get; private set; }
 
     private UnityAction _died;
     private UnityAction _attacking;
-    private UnityAction _tookDamage;
+
+    private void OnEnable()
+    {
+        SetAttacked(false);
+    }    
 
     private void FixedUpdate()
     {
@@ -36,15 +39,15 @@ public class Enemy : MonoBehaviour, IPointerClickHandler
         remove => _attacking -= value;
     }
 
-    public event UnityAction OnTookDamage
-    {
-        add => _tookDamage += value;
-        remove => _tookDamage -= value;
-    }
-
     public void OnPointerClick(PointerEventData eventData)
     {
-        Target.Attack(_spellTarget);
+        if (Attacked == false && Target.gameObject.activeSelf)
+            Target.TryAttack(_spellTarget);
+    }
+
+    public void SetAttacked(bool wasAttacked)
+    {
+        Attacked = wasAttacked;
     }
 
     public void InitializeTarget(Player target)
@@ -52,26 +55,25 @@ public class Enemy : MonoBehaviour, IPointerClickHandler
         Target = target;
     }
 
-    public void Attack()
+    public void TryAttack()
     {
-        _attacking?.Invoke();
-        Target.TakeDamage(_damage);
+        if (Target.Health > 0)
+        {
+            _attacking?.Invoke();
+            Target.TakeDamage(_damage);
+        }
     }
 
-    public void TakeDamage(float damage)
+    public void Die()
     {
-        if (_health > 0)
-        {
-            _health -= damage;
-            _tookDamage?.Invoke();
-        }
-        
-        if (_health <= 0)
-        {
-            _died?.Invoke();
-            Target.GainExperience(_experience);
-            StartCoroutine(Deactivator());
-        }
+        _died?.Invoke();
+        Target.AddReward(_reward);
+        StartCoroutine(Deactivator());
+    }
+
+    public void Destroy()
+    {
+        Destroy(gameObject);
     }
 
     private void LookAtTarget()

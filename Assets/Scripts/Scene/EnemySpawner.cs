@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UIElements;
 
 public class EnemySpawner : EnemyPool
@@ -17,6 +18,9 @@ public class EnemySpawner : EnemyPool
 
     private List<int> _previousSpawnPoints = new List<int>();
 
+    private UnityAction<int> _setWave;
+    private UnityAction _allEnemiesSpawned;
+
     private void Start()
     {
         SetWave(_currentWaveNumber);
@@ -26,7 +30,10 @@ public class EnemySpawner : EnemyPool
     private void Update()
     {
         if (_currentWave == null)
+        {
+            Debug.Log("return");
             return;
+        }
 
         _timeAfterLastSpawn += Time.deltaTime;
 
@@ -41,7 +48,31 @@ public class EnemySpawner : EnemyPool
         }
 
         if (_spawnedEnemiesCount == _currentWave.TotalAmountEnemies)
+        {
+            if (_waves.Count > _currentWaveNumber + 1)
+                _allEnemiesSpawned?.Invoke();
+
             _currentWave = null;
+        }
+    }
+
+    public event UnityAction OnAllEnemiesDied
+    {
+        add => _allEnemiesSpawned += value;
+        remove => _allEnemiesSpawned -= value;
+    }
+
+    public event UnityAction<int> OnSetWave
+    {
+        add => _setWave += value;
+        remove => _setWave -= value;
+    }
+
+    public void SetNextWave()
+    {
+        SetWave(++_currentWaveNumber);
+        Initialize(_currentWave.Enemy);
+        _spawnedEnemiesCount = 0;
     }
 
     private Vector3 GetNextPosition()
@@ -82,14 +113,23 @@ public class EnemySpawner : EnemyPool
     {
         _currentWave = _waves[index];
         SetCapacity(_currentWave.AmountEnemiesOnScene);
+        _setWave?.Invoke(_currentWave.TotalAmountEnemies);
     }
 }
 
 [System.Serializable]
 public class Wave
 {
-    public Enemy Enemy;
-    public float DelayBetwenSpawn;
-    public int TotalAmountEnemies;
-    public int AmountEnemiesOnScene;
+    [SerializeField] private Enemy _enemy;
+    [SerializeField] private float _delayBetwenSpawn;
+    [SerializeField] private int _totalAmountEnemies;
+    [SerializeField] private int _amountEnemiesOnScene;
+
+    public Enemy Enemy => _enemy;
+
+    public float DelayBetwenSpawn => _delayBetwenSpawn;
+
+    public int TotalAmountEnemies => _totalAmountEnemies;
+
+    public int AmountEnemiesOnScene => _amountEnemiesOnScene;
 }

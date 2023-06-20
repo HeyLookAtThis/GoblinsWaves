@@ -23,7 +23,7 @@ public class AttackState : State
 
         if (_lastAttackTime >= _delay)
         {
-            _enemy.Attack();
+            _enemy.TryAttack();
             _lastAttackTime = 0;
         }
     }

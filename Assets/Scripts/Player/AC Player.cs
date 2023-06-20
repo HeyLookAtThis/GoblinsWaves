@@ -8,6 +8,7 @@ public static class ACPlayer
     {
         public const string Idle = nameof(Idle);
         public const string Shot = nameof(Shot);
+        public const string Death = nameof(Death);
     }
 
     public static class Params
