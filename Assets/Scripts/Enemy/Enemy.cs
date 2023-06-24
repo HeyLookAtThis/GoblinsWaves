@@ -4,11 +4,14 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
+[RequireComponent(typeof(CapsuleCollider))]
 public class Enemy : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private float _damage;
     [SerializeField] private int _reward;
     [SerializeField] private Transform _spellTarget;
+
+    private CapsuleCollider _capsule;
 
     public bool Attacked { get; private set; }
 
@@ -17,9 +20,15 @@ public class Enemy : MonoBehaviour, IPointerClickHandler
     private UnityAction _died;
     private UnityAction _attacking;
 
+    private void Awake()
+    {
+        _capsule = GetComponent<CapsuleCollider>();
+    }
+
     private void OnEnable()
     {
         SetAttacked(false);
+        _capsule.enabled = true;
     }    
 
     private void FixedUpdate()
@@ -67,6 +76,7 @@ public class Enemy : MonoBehaviour, IPointerClickHandler
     public void Die()
     {
         _died?.Invoke();
+        _capsule.enabled = false;
         Target.AddReward(_reward);
         StartCoroutine(Deactivator());
     }

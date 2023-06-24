@@ -1,17 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Text))]
+[RequireComponent(typeof(TMP_Text))]
 public class RewardsBoard : MonoBehaviour
 {
-    [SerializeField] private Player _player;
+    [SerializeField] private CanvasController _canvas;
 
-    private Text _board;
+    private Player _player;
+
+    private TMP_Text _board;
 
     private Coroutine _textChanger;
     private int _rewardsValue;
+
+    private void Awake()
+    {
+        _player = _canvas.Player;
+    }
 
     private void OnEnable()
     {
@@ -25,7 +33,7 @@ public class RewardsBoard : MonoBehaviour
 
     private void Start()
     {
-        _board = GetComponent<Text>();
+        _board = GetComponent<TMP_Text>();
         _board.text = _player.Rewards.ToString();
     }
 

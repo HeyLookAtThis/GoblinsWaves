@@ -1,13 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class Spell : MonoBehaviour
+public abstract class Spell : MonoBehaviour
 {
-    [SerializeField] private float _manaCost;
+    [SerializeField] protected float manaCost;
+
+    [SerializeField] private Sprite _icon;
     [SerializeField] private float _flyingSpeed;
 
-    public float ManaCost => _manaCost;
+    protected int upgradeCost;
+    protected int levels;
+    protected Dictionary<int, string> levelsDescriptions;
+
+    public Sprite Icon => _icon;
+
+    public int UpgradeCost => upgradeCost;
+
+    public int Levels => levels;
+
+    public float ManaCost => manaCost;
+
+    public abstract void Upgrade();
+
+    public abstract void InitializeLevelsDescriptions();
+
+    public abstract string ShowLevelDescription(int level);
 
     public void Fly(Transform enemy)
     {

@@ -16,7 +16,7 @@ public class EnemySpawner : EnemyPool
     private int _spawnedEnemiesCount;
     private float _timeAfterLastSpawn;
 
-    private List<int> _previousSpawnPoints = new List<int>();
+    private List<int> _previousSpawnPointsIndices = new List<int>();
 
     private UnityAction<int> _setWave;
     private UnityAction _allEnemiesSpawned;
@@ -31,13 +31,12 @@ public class EnemySpawner : EnemyPool
     {
         if (_currentWave == null)
         {
-            Debug.Log("return");
             return;
         }
 
         _timeAfterLastSpawn += Time.deltaTime;
 
-        if(_timeAfterLastSpawn >= _currentWave.DelayBetwenSpawn)
+        if(_timeAfterLastSpawn >= _currentWave.DelayBetwenSpawn && _spawnedEnemiesCount < _currentWave.TotalAmountEnemies)
         {
             if (TryGetObject(out Enemy enemy))
             {
@@ -47,12 +46,13 @@ public class EnemySpawner : EnemyPool
             }
         }
 
-        if (_spawnedEnemiesCount == _currentWave.TotalAmountEnemies)
+        if (_spawnedEnemiesCount == _currentWave.TotalAmountEnemies && WasAllEnemiesDied())
         {
             if (_waves.Count > _currentWaveNumber + 1)
                 _allEnemiesSpawned?.Invoke();
 
             _currentWave = null;
+            ClearPool();
         }
     }
 
@@ -80,22 +80,22 @@ public class EnemySpawner : EnemyPool
         int index = Random.Range(0, _spawnPoints.Length);
         bool isContinue = true;
 
-        if(_previousSpawnPoints.Count == _spawnPoints.Length)
+        if(_previousSpawnPointsIndices.Count == _spawnPoints.Length)
         {
-            _previousSpawnPoints.Clear();
+            _previousSpawnPointsIndices.Clear();
             isContinue = false;
         }
 
         while(isContinue)
         {
-            if (_previousSpawnPoints.Contains(index))
+            if (_previousSpawnPointsIndices.Contains(index))
             {
                 index = Random.Range(0, _spawnPoints.Length);
             }
             else
             {
                 isContinue = false;
-                _previousSpawnPoints.Add(index);
+                _previousSpawnPointsIndices.Add(index);
             }
         }
 

@@ -18,10 +18,6 @@ public class EnemyPool : MonoBehaviour
 
     protected void Initialize(Enemy prefab)
     {
-        _pool.Clear();
-        TryClearContainer();
-        Debug.Log("Clear");
-
         for (int i = 0; i < _capacity; i++)
         {
             Enemy spawenedObject = Instantiate(prefab, _container.transform);
@@ -36,13 +32,29 @@ public class EnemyPool : MonoBehaviour
         return result != null;
     }
 
+    protected void ClearPool()
+    {
+        _pool.Clear();
+
+        TryClearContainer();
+    }
+
+    protected bool WasAllEnemiesDied()
+    {
+        foreach(Enemy enemy in _pool)
+            if (enemy.gameObject.activeSelf)
+                return false;
+
+        return true;
+    }
+
     private void TryClearContainer()
     {
         if (_container.GetComponentsInChildren<Enemy>() != null)
         {
             Enemy[] enemies = _container.GetComponentsInChildren<Enemy>();
 
-            foreach(Enemy enemy in enemies)
+            foreach (Enemy enemy in enemies)
                 enemy.Destroy();
         }
     }

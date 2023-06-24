@@ -8,6 +8,7 @@ public class ProgressBar : Bar
     [SerializeField] private EnemySpawner _spawner;
 
     private float _step;
+    private float _targetValue;
 
     private void Start()
     {
@@ -29,13 +30,14 @@ public class ProgressBar : Bar
     private void SetDefaultState(int enemyCount)
     {
         Slider.value = 0;
+        _targetValue = 0;
         _step = Slider.maxValue / enemyCount;
     }
 
     private void SetNextValue()
     {
-        float newValue = Slider.value + _step;
+        _targetValue += _step;
 
-        BeginChangeValue(newValue);
+        BeginChangeValue(_targetValue);
     }
 }

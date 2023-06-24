@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 3132620684419275800}
   - component: {fileID: 520558842764828521}
   - component: {fileID: 745514973411962468}
-  - component: {fileID: 3400322018843201479}
+  - component: {fileID: -3709253692490153784}
   m_Layer: 0
-  m_Name: Spell
+  m_Name: LightRay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -96,7 +96,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3400322018843201479
+--- !u!114 &-3709253692490153784
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -105,9 +105,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7627880629138268679}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef2bb0a2a1879f24c900abb093d301b1, type: 3}
+  m_Script: {fileID: 11500000, guid: 3ac93e8f98c3c384990258d762e79de5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damage: 5
-  _manaCost: 4
+  manaCost: 4
+  _icon: {fileID: 21300000, guid: b450d0b398880cb458f83d1a01b399ca, type: 3}
   _flyingSpeed: 50
