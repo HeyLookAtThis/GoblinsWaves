@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using static UnityEngine.GraphicsBuffer;
@@ -8,16 +9,23 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private float _health;
     [SerializeField] private float _mana;
-    [SerializeField] private Spell _spell;
+    [SerializeField] private List<Spell> _spells;
     [SerializeField] private Transform _spellHand;
 
     private Coroutine _deactivator;
+    private Spell _currentSpell;
 
     public float Health => _health;
 
     public float Mana => _mana;
 
-    public int Rewards { get; private set; } = 0;
+    public int Rewards { get; private set; }
+
+    private void Start()
+    {
+        _currentSpell = _spells[0];
+        Rewards = 0;
+    }
 
     private UnityAction _attacking;
     private UnityAction _died;
@@ -74,7 +82,7 @@ public class Player : MonoBehaviour
     {
         RotateToEnemy(enemy);
 
-        if (_mana >= _spell.ManaCost)
+        if (_mana >= _currentSpell.ManaCost)
         {
             _attacking?.Invoke();
             ShootSpell(enemy);
@@ -87,6 +95,18 @@ public class Player : MonoBehaviour
         _changedRewards?.Invoke(Rewards);
     }
 
+    public void UpgradeSpell(Spell spell, int upgradeCost)
+    {
+        var upgradedSpell = _spells.FirstOrDefault(upgradedSpell => upgradedSpell == spell);
+
+        if (upgradedSpell != null)
+            upgradedSpell.Upgrade();
+        else
+            _spells.Add(spell);
+
+        Rewards -= upgradeCost;
+    }
+
     private void RotateToEnemy(Transform target)
     {
         Vector3 targetDirection = target.position - transform.position;
@@ -96,7 +116,7 @@ public class Player : MonoBehaviour
 
     private void ShootSpell(Transform target)
     {
-        Spell spell = Instantiate(_spell, _spellHand.position, Quaternion.identity);
+        Spell spell = Instantiate(_currentSpell, _spellHand.position, Quaternion.identity);
 
         _mana-= spell.ManaCost;
         _changedMana?.Invoke(Mana);

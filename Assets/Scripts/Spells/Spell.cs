@@ -6,19 +6,22 @@ using UnityEngine.UI;
 public abstract class Spell : MonoBehaviour
 {
     [SerializeField] protected float manaCost;
+    [SerializeField] protected int levels;
+    [SerializeField] protected int upgradeCost;
+    [SerializeField] protected Sprite _icon;
 
-    [SerializeField] private Sprite _icon;
-    [SerializeField] private float _flyingSpeed;
+    protected int currentLevel = 0;
+    protected Dictionary<int, string> levelsDescriptions = new Dictionary<int, string>();
 
-    protected int upgradeCost;
-    protected int levels;
-    protected Dictionary<int, string> levelsDescriptions;
+    private float _flyingSpeed = 50;
 
     public Sprite Icon => _icon;
 
     public int UpgradeCost => upgradeCost;
 
     public int Levels => levels;
+
+    public int CurrentLevel => currentLevel;
 
     public float ManaCost => manaCost;
 

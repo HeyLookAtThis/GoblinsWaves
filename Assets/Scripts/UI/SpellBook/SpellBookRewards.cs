@@ -5,17 +5,11 @@ using UnityEngine;
 
 public class SpellBookRewards : MonoBehaviour
 {
-    [SerializeField] private CanvasController _canvas;
-
-    private TMP_Text _text;
-
-    private void Awake()
-    {
-        _text = GetComponent<TMP_Text>();
-    }
+    [SerializeField] private TMP_Text _text;
+    [SerializeField] private Player _player;
 
     private void OnEnable()
     {
-        _text.text = _canvas.Player.Rewards.ToString();
+        _text.text = _player.Rewards.ToString();
     }
 }
