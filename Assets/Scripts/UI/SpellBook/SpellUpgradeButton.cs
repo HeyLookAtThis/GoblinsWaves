@@ -6,22 +6,25 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Button))]
-public class SpellUpgrade : MonoBehaviour
+public class SpellUpgradeButton : MonoBehaviour
 {
     [SerializeField] private bool _isUpgraded;
+    [SerializeField] private Player _player;
 
     private Spell _spell;
     private Button _button;
-    private SpellInfoView _spellInfoView;
+    private WindowBuySpells _windowBuySpells;
     private int _spellPrice;
     private string _description;
-    private Player _player;
+    private int _spellButtonLevel;
 
     public string Description => _description;
 
     public int SpellPrice => _spellPrice;
 
     public bool IsUpgraded => _isUpgraded;
+
+    public Spell Spell => _spell;
 
     private void Awake()
     {
@@ -31,23 +34,23 @@ public class SpellUpgrade : MonoBehaviour
     private void OnEnable()
     {
         _button.onClick.AddListener(ShowSpellInfo);
-        _spellInfoView.OnBuyButtonClicked += Upgrade;
+        _player.OnTrySpellUpgrade += TryUpgrade;
     }
 
     private void OnDisable()
     {
         _button.onClick.RemoveListener(ShowSpellInfo);
-        _spellInfoView.OnBuyButtonClicked -= Upgrade;
+        _player.OnTrySpellUpgrade -= TryUpgrade;
     }
 
-    public void Initialize(Spell spell, int coefficient, string description, SpellInfoView spellInfo, Player player)
+    public void Initialize(Spell spell, int spellLevel, string description, WindowBuySpells spellInfo)
     {
         _spell = spell;
-        _spellPrice = _spell.UpgradeCost * coefficient;
+        _spellPrice = _spell.UpgradeCost * spellLevel;
+        _spellButtonLevel = spellLevel;
         _description = description;
         _button.image.sprite = _spell.Icon;
-        _spellInfoView = spellInfo;
-        _player = player;
+        _windowBuySpells = spellInfo;
     }
 
     public void SetButtonInteractable(bool isInteractable)
@@ -55,15 +58,23 @@ public class SpellUpgrade : MonoBehaviour
         _button.interactable = isInteractable;
     }
 
-    public void Upgrade()
+    public void SetUpgrade(int? spellLevel)
     {
-        _isUpgraded = true;
-        _player.UpgradeSpell(_spell, _spellPrice);
+        if (_spellButtonLevel == spellLevel)
+            _isUpgraded = true;
+
+        ShowSpellInfo();
+    }
+
+    public void TryUpgrade(bool isSuccsses)
+    {
+        _isUpgraded = isSuccsses;
+        ShowSpellInfo();
     }
 
     private void ShowSpellInfo()
     {
-        _spellInfoView.gameObject.SetActive(true);
-        _spellInfoView.SetInfo(this);
+        _windowBuySpells.gameObject.SetActive(true);
+        _windowBuySpells.SetInfo(this);
     }
 }

@@ -10,9 +10,9 @@ public abstract class Spell : MonoBehaviour
     [SerializeField] protected int upgradeCost;
     [SerializeField] protected Sprite _icon;
 
-    protected int currentLevel = 0;
     protected Dictionary<int, string> levelsDescriptions = new Dictionary<int, string>();
 
+    protected int currentLevel = 0;
     private float _flyingSpeed = 50;
 
     public Sprite Icon => _icon;

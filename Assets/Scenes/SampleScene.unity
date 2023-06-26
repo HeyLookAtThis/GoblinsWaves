@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.37311992, g: 0.38074034, b: 0.35872713, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311926, g: 0.38074008, b: 0.35872707, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -256,6 +256,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1794670524529371859, guid: 406130424b8e92449bd78b5c9f013d75, type: 3}
   m_PrefabInstance: {fileID: 2842422999224236263}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1410249254 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6528231986041074041, guid: 406130424b8e92449bd78b5c9f013d75, type: 3}
+  m_PrefabInstance: {fileID: 2842422999224236263}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1579998762 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5864190532276290653, guid: 406130424b8e92449bd78b5c9f013d75, type: 3}
@@ -2284,6 +2295,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.GameObject, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 5957814232631776687, guid: 406130424b8e92449bd78b5c9f013d75, type: 3}
+      propertyPath: _priceText
+      value: 
+      objectReference: {fileID: 1410249254}
     - target: {fileID: 5986818218147260108, guid: 406130424b8e92449bd78b5c9f013d75, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

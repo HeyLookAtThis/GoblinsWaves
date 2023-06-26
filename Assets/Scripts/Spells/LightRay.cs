@@ -7,7 +7,7 @@ public class LightRay : Spell
 {
     private float _manaCostForUpgrade;
 
-    private void Start()
+    private void Awake()
     {
         _manaCostForUpgrade = manaCost;
         currentLevel = 1;
@@ -32,8 +32,6 @@ public class LightRay : Spell
         levelsDescriptions.Add(firsLevel, firstLevelDescription);
         levelsDescriptions.Add(secondLevel, secondLevelDescription);
         levelsDescriptions.Add(thirdLevel, thirdLevelDescription);
-
-        Debug.Log("Add");
     }
 
     public override string ShowLevelDescription(int level)

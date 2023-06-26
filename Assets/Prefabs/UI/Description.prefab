@@ -363,7 +363,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _description: {fileID: 2775037027600347146}
-  _price: {fileID: 3351060915772264551}
+  _priceText: {fileID: 0}
   _buyButton: {fileID: 3016452895892708399}
 --- !u!1 &7150707436084264709
 GameObject:
@@ -430,8 +430,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u0417\u0430\u043A\u043B\u0438\u043D\u0430\u043D\u0438\u0435 \u043D\u0430\u0447\u0430\u043B\u0430
-    \u0443\u0440\u043E\u0432\u043D\u044F"
+  m_text: "\u0412\u043E\u0441\u0441\u0442\u0430\u043D\u0430\u0432\u043B\u0438\u0432\u0430\u0435\u0442
+    \u043E\u0447\u043A\u0438 \u043C\u0430\u043D\u044B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: e73a58f6e2794ae7b1b7e50b7fb811b0, type: 2}

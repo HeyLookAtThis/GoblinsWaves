@@ -133,4 +133,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b317eb90b9c556b41a52b8e6bb1d47d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isBought: 0
+  _isUpgraded: 0
+  _player: {fileID: 4213011751594402951, guid: 016f4a7b359d4d448a0c5cfbb05fa8ca, type: 3}
+  _windowBuySpells: {fileID: 2789914240181843121, guid: 585c1bc24108a9641ac75b40b989a700, type: 3}

@@ -1458,9 +1458,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43f5f355a9d1b6245b79e641b292067e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 100
-  _mana: 64
-  _spell: {fileID: 3400322018843201479, guid: b6f3e4ae22c49ac4799bbc895e8c423c, type: 3}
+  _health: 40
+  _mana: 400
+  _spells:
+  - {fileID: -3709253692490153784, guid: b6f3e4ae22c49ac4799bbc895e8c423c, type: 3}
   _spellHand: {fileID: 7140221186427811263}
 --- !u!114 &468751430455573857
 MonoBehaviour:

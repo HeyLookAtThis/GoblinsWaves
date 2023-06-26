@@ -21,10 +21,10 @@ public class Player : MonoBehaviour
 
     public int Rewards { get; private set; }
 
-    private void Start()
+    private void Awake()
     {
         _currentSpell = _spells[0];
-        Rewards = 0;
+        Rewards = 200;
     }
 
     private UnityAction _attacking;
@@ -33,6 +33,7 @@ public class Player : MonoBehaviour
     private UnityAction<float> _changedHealth;
     private UnityAction<float> _changedMana;
     private UnityAction<int> _changedRewards;
+    private UnityAction<bool> _trySpellUpgrade;
 
     public event UnityAction OnAttacking
     {
@@ -62,6 +63,12 @@ public class Player : MonoBehaviour
     {
         add => _changedRewards += value;
         remove => _changedRewards -= value;
+    }
+
+    public event UnityAction<bool> OnTrySpellUpgrade
+    {
+        add => _trySpellUpgrade += value;
+        remove => _trySpellUpgrade -= value;
     }
 
     public void TakeDamage(float damage)
@@ -95,7 +102,25 @@ public class Player : MonoBehaviour
         _changedRewards?.Invoke(Rewards);
     }
 
-    public void UpgradeSpell(Spell spell, int upgradeCost)
+    public bool TryUpgradeSpell(Spell spell, int upgradeCost)
+    {
+        if (Rewards >= upgradeCost)
+        {
+            UpgradeSpell(spell, upgradeCost);
+            _trySpellUpgrade?.Invoke(true);
+            return true;
+        }
+
+        _trySpellUpgrade?.Invoke(false);
+        return false;
+    }
+
+    public int CheckSpellLevel(Spell spell)
+    {
+        return _spells.FirstOrDefault(desiredSpell => desiredSpell == spell).CurrentLevel;        
+    }
+
+    private void UpgradeSpell(Spell spell, int upgradeCost)
     {
         var upgradedSpell = _spells.FirstOrDefault(upgradedSpell => upgradedSpell == spell);
 

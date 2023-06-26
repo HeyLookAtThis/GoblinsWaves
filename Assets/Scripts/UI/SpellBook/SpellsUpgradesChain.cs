@@ -6,41 +6,48 @@ using UnityEngine.UIElements;
 
 public class SpellsUpgradesChain : MonoBehaviour
 {
-    [SerializeField] private SpellUpgrade _botton;
+    [SerializeField] private SpellUpgradeButton _botton;
     [SerializeField] private GameObject _image;
 
-    private List<SpellUpgrade> _buttons = new List<SpellUpgrade>();    
+    private List<SpellUpgradeButton> _buttons = new List<SpellUpgradeButton>();
 
-    public void CreateButtons(Spell spell, SpellInfoView spellInfo, Player player)
+    private Player _player;
+
+    public void CreateButtons(Spell spell, WindowBuySpells spellInfo, Player player)
     {
-        int spellListNumber = 1;
+        int spellLevel = spell.CurrentLevel;
 
         spell.InitializeLevelsDescriptions();
 
+        _player = player;
+
         for (int i = 0; i < spell.Levels; i++)
         {
-            SpellUpgrade button = Instantiate(_botton, transform);
+            SpellUpgradeButton button = Instantiate(_botton, transform);
             
-            spellListNumber += i;
+            spellLevel += i;
 
-            button.Initialize(spell, spellListNumber, spell.ShowLevelDescription(spellListNumber), spellInfo, player);
+            button.Initialize(spell, spellLevel, spell.ShowLevelDescription(spellLevel), spellInfo);
             _buttons.Add(button);
 
-            if(spellListNumber < spell.Levels)
+            if(spellLevel < spell.Levels)
                 Instantiate(_image, transform);
 
             if (i > 0)
                 button.SetButtonInteractable(false);
-
-            if (spellListNumber == spell.CurrentLevel)
-                player.UpgradeSpell(spell, spell.UpgradeCost);
-
         }
 
+        CheckPlayerSpells();
         OpenNextButton();
     }
 
-    private void OpenNextButton()
+    private void CheckPlayerSpells()
+    {
+        foreach(var button in _buttons)
+            button.SetUpgrade(_player.CheckSpellLevel(button.Spell));
+    }
+
+    public void OpenNextButton()
     {
         for (int i = 0; i < _buttons.Count; i++)
             if (_buttons[i].IsUpgraded)
