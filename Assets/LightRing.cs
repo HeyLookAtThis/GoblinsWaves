@@ -14,7 +14,7 @@ public class LightRing : Spell
         throw new System.NotImplementedException();
     }
 
-    public override void Upgrade()
+    public override void SetLevel(int level)
     {
         throw new System.NotImplementedException();
     }

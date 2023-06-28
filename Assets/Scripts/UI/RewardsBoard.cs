@@ -28,7 +28,7 @@ public class RewardsBoard : MonoBehaviour
 
     private void OnDisable()
     {
-        _player.OnChangedRewards += BeginChangeText;
+        _player.OnChangedRewards -= BeginChangeText;
     }
 
     private void Start()
@@ -47,7 +47,7 @@ public class RewardsBoard : MonoBehaviour
 
     private IEnumerator TextChanger(int targetValue)
     {
-        float seconds = 0.1f;
+        float seconds = 0.05f;
         var waitTime = new WaitForSeconds(seconds);
 
         while (true)
@@ -55,7 +55,12 @@ public class RewardsBoard : MonoBehaviour
             if(_board.text != targetValue.ToString())
             {
                 int.TryParse(_board.text, out _rewardsValue);
-                _rewardsValue++;
+
+                if (_rewardsValue < targetValue)
+                    _rewardsValue++;
+                else
+                    _rewardsValue--;
+
                 _board.text = _rewardsValue.ToString();
                 yield return waitTime;
             }

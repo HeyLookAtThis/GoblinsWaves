@@ -12,40 +12,38 @@ public class WindowBuySpells : MonoBehaviour
     [SerializeField] private TMP_Text _priceText;
     [SerializeField] private Button _buyButton;
 
-    private Spell _spell;
-    private int _price;
+    private UpgradeButton _button;
 
-    private UnityAction<Spell, int> _transferingSpellAndPrice;
+    private UnityAction<UpgradeButton> _transferingUpgradeButton;
 
-    public event UnityAction<Spell, int> OnTransferingSpellAndPrice
+    public event UnityAction<UpgradeButton> OnTransferingUpgradeButton
     {
-        add => _transferingSpellAndPrice += value;
-        remove => _transferingSpellAndPrice -= value;
+        add => _transferingUpgradeButton += value;
+        remove => _transferingUpgradeButton -= value;
     }
 
     private void OnEnable()
     {
-        _buyButton.onClick.AddListener(InvokingActions);
+        _buyButton.onClick.AddListener(InvokeAction);
     }
 
     private void OnDisable()
     {
-        _buyButton.onClick.RemoveListener(InvokingActions);
+        _buyButton.onClick.RemoveListener(InvokeAction);
     }
 
-    public void SetInfo(SpellUpgradeButton button)
+    public void SetInfo(UpgradeButton button)
     {
         _description.text = button.Description;
-        _price = button.SpellPrice;
-        _priceText.text = button.SpellPrice.ToString();
-        _spell = button.Spell;
+        _priceText.text = button.Price.ToString();
+        _button = button;
 
         SetBuyButtonVisible(button);
     }
 
-    private void SetBuyButtonVisible(SpellUpgradeButton spell)
+    private void SetBuyButtonVisible(UpgradeButton button)
     {
-        if (spell.IsUpgraded)
+        if (button.IsUpgraded)
             SetBuyButtonVisible(false);
         else
             SetBuyButtonVisible(true);
@@ -57,8 +55,8 @@ public class WindowBuySpells : MonoBehaviour
         _priceText.gameObject.SetActive(isVisible);
     }
 
-    private void InvokingActions()
+    private void InvokeAction()
     {
-        _transferingSpellAndPrice?.Invoke(_spell, _price);
+        _transferingUpgradeButton?.Invoke(_button);
     }
 }

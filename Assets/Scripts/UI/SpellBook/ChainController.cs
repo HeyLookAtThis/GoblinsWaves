@@ -7,9 +7,9 @@ using UnityEngine.UI;
 public class ChainController : MonoBehaviour
 {
     [SerializeField] private GameObject _container;
-    [SerializeField] private WindowBuySpells _spellInfoView;
+    [SerializeField] private WindowBuySpells _windowBuySpells;
     [SerializeField] private List<Spell> _spells;
-    [SerializeField] private SpellsUpgradesChain _spellChain;
+    [SerializeField] private UpgradesChain _spellChain;
     [SerializeField] private Player _player;
 
     private void Awake()
@@ -19,25 +19,22 @@ public class ChainController : MonoBehaviour
 
     private void OnEnable()
     {
-        _spellInfoView.OnTransferingSpellAndPrice += UpgradeSpell;
+        _windowBuySpells.OnTransferingUpgradeButton += UpgradeSpell;
     }
 
     private void OnDisable()
     {
-        _spellInfoView.OnTransferingSpellAndPrice -= UpgradeSpell;
+        _windowBuySpells.OnTransferingUpgradeButton -= UpgradeSpell;
     }
 
     private void CreateChains()
     {
         foreach (Spell spell in _spells)
-        {
-            SpellsUpgradesChain spellChain = Instantiate(_spellChain, _container.transform);
-            spellChain.CreateButtons(spell, _spellInfoView, _player);
-        }
+            Instantiate(_spellChain, _container.transform).Create(spell, _windowBuySpells, _player);
     }
 
-    private void UpgradeSpell(Spell spell, int upgradeCost)
+    private void UpgradeSpell(UpgradeButton upgrade)
     {
-        _player.TryUpgradeSpell(spell, upgradeCost);
+        _player.TryUpgradeSpell(upgrade);
     }
 }

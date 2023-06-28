@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UIElements;
+using static UnityEditor.Experimental.GraphView.GraphView;
 using static UnityEngine.GraphicsBuffer;
 
 public class Player : MonoBehaviour
@@ -12,6 +14,7 @@ public class Player : MonoBehaviour
     [SerializeField] private List<Spell> _spells;
     [SerializeField] private Transform _spellHand;
 
+    private int _startSpellLevel = 1;
     private Coroutine _deactivator;
     private Spell _currentSpell;
 
@@ -24,6 +27,8 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         _currentSpell = _spells[0];
+        _currentSpell.SetLevel(_startSpellLevel);
+
         Rewards = 200;
     }
 
@@ -71,6 +76,22 @@ public class Player : MonoBehaviour
         remove => _trySpellUpgrade -= value;
     }
 
+    public int GetSpellLevel(Spell spell)
+    {
+        Debug.Log(spell);
+
+        if (_spells.Contains(spell))
+        {
+            Debug.Log(_spells.Find(playerSpell => playerSpell == spell).CurrentLevel);
+
+            return _spells.Find(playerSpell => playerSpell == spell).CurrentLevel;
+        }
+        else
+            Debug.Log("no");
+
+        return _startSpellLevel;
+    }
+
     public void TakeDamage(float damage)
     {
         _health -= damage;
@@ -102,11 +123,11 @@ public class Player : MonoBehaviour
         _changedRewards?.Invoke(Rewards);
     }
 
-    public bool TryUpgradeSpell(Spell spell, int upgradeCost)
+    public bool TryUpgradeSpell(UpgradeButton upgrade)
     {
-        if (Rewards >= upgradeCost)
+        if (Rewards >= upgrade.Price)
         {
-            UpgradeSpell(spell, upgradeCost);
+            UpgradeSpell(upgrade.Spell, upgrade.Price, upgrade.Level);
             _trySpellUpgrade?.Invoke(true);
             return true;
         }
@@ -115,21 +136,35 @@ public class Player : MonoBehaviour
         return false;
     }
 
-    public int CheckSpellLevel(Spell spell)
+    public bool CheckSpell(Spell spell, int level)
     {
-        return _spells.FirstOrDefault(desiredSpell => desiredSpell == spell).CurrentLevel;        
+        var foundSpell = _spells.FirstOrDefault(desiredSpell => desiredSpell == spell && desiredSpell.CurrentLevel == level);
+        
+        if (foundSpell != null)
+            return true;
+
+        return false;
     }
 
-    private void UpgradeSpell(Spell spell, int upgradeCost)
+    private void UpgradeSpell(Spell spell, int cost, int level)
     {
         var upgradedSpell = _spells.FirstOrDefault(upgradedSpell => upgradedSpell == spell);
 
         if (upgradedSpell != null)
-            upgradedSpell.Upgrade();
+        {
+            var index = _spells.IndexOf(upgradedSpell);
+            _spells[index].SetLevel(level);
+        }
         else
+        {
             _spells.Add(spell);
+        }
 
-        Rewards -= upgradeCost;
+        Debug.Log(_spells[0].CurrentLevel);
+
+
+        Rewards -= cost;
+        _changedRewards?.Invoke(Rewards);
     }
 
     private void RotateToEnemy(Transform target)
@@ -142,8 +177,9 @@ public class Player : MonoBehaviour
     private void ShootSpell(Transform target)
     {
         Spell spell = Instantiate(_currentSpell, _spellHand.position, Quaternion.identity);
+        Debug.Log($"Instantiate {spell.CurrentLevel}");
 
-        _mana-= spell.ManaCost;
+        _mana -= spell.ManaCost;
         _changedMana?.Invoke(Mana);
 
         spell.Fly(target);

@@ -5,18 +5,17 @@ using UnityEngine;
 
 public class LightRay : Spell
 {
-    private float _manaCostForUpgrade;
+    private float _manaCostForUpgrade;    
 
-    private void Awake()
+    private void Start()
     {
         _manaCostForUpgrade = manaCost;
-        currentLevel = 1;
     }
 
-    public override void Upgrade()
+    public override void SetLevel(int level)
     {
-        manaCost -= _manaCostForUpgrade;
-        currentLevel++;
+        currentLevel = level;
+        manaCost -= _manaCostForUpgrade * --level;
     }
 
     public override void InitializeLevelsDescriptions()

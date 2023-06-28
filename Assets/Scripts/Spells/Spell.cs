@@ -8,14 +8,15 @@ public abstract class Spell : MonoBehaviour
     [SerializeField] protected float manaCost;
     [SerializeField] protected int levels;
     [SerializeField] protected int upgradeCost;
-    [SerializeField] protected Sprite _icon;
+    [SerializeField] protected Sprite icon;
+    [SerializeField] protected Player player;
 
     protected Dictionary<int, string> levelsDescriptions = new Dictionary<int, string>();
 
-    protected int currentLevel = 0;
+    protected int currentLevel;
     private float _flyingSpeed = 50;
 
-    public Sprite Icon => _icon;
+    public Sprite Icon => icon;
 
     public int UpgradeCost => upgradeCost;
 
@@ -25,7 +26,12 @@ public abstract class Spell : MonoBehaviour
 
     public float ManaCost => manaCost;
 
-    public abstract void Upgrade();
+    private void OnEnable()
+    {
+        SetLevel(player.GetSpellLevel(this));
+    }
+
+    public abstract void SetLevel(int level);
 
     public abstract void InitializeLevelsDescriptions();
 
