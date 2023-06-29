@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class WindowBuySpells : MonoBehaviour
+public class DescriptionPanel : MonoBehaviour
 {
     [SerializeField] private TMP_Text _description;
     [SerializeField] private TMP_Text _priceText;
@@ -24,12 +24,12 @@ public class WindowBuySpells : MonoBehaviour
 
     private void OnEnable()
     {
-        _buyButton.onClick.AddListener(InvokeAction);
+        _buyButton.onClick.AddListener(TransferUpgradeButton);
     }
 
     private void OnDisable()
     {
-        _buyButton.onClick.RemoveListener(InvokeAction);
+        _buyButton.onClick.RemoveListener(TransferUpgradeButton);
     }
 
     public void SetInfo(UpgradeButton button)
@@ -55,7 +55,7 @@ public class WindowBuySpells : MonoBehaviour
         _priceText.gameObject.SetActive(isVisible);
     }
 
-    private void InvokeAction()
+    private void TransferUpgradeButton()
     {
         _transferingUpgradeButton?.Invoke(_button);
     }

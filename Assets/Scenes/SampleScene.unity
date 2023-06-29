@@ -214,17 +214,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1034786184 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5957814232631776687, guid: 406130424b8e92449bd78b5c9f013d75, type: 3}
-  m_PrefabInstance: {fileID: 2842422999224236263}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f19e733b144daff42840dff9d9ca7939, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1042412133 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4969630837286965241, guid: 0750da481bd46b148b506bbd17996517, type: 3}
@@ -314,7 +303,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4213011751594402951, guid: 016f4a7b359d4d448a0c5cfbb05fa8ca, type: 3}
       propertyPath: _mana
-      value: 400
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 4213011751594402951, guid: 016f4a7b359d4d448a0c5cfbb05fa8ca, type: 3}
       propertyPath: _arrow
@@ -390,6 +379,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 016f4a7b359d4d448a0c5cfbb05fa8ca, type: 3}
+--- !u!114 &1861408664 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6844557388049407048, guid: 406130424b8e92449bd78b5c9f013d75, type: 3}
+  m_PrefabInstance: {fileID: 2842422999224236263}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9480ddae324f2749b12223c4574838f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1871668427 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2680849994241777278, guid: 0750da481bd46b148b506bbd17996517, type: 3}
@@ -2639,7 +2639,7 @@ PrefabInstance:
     - target: {fileID: 7300411997486205042, guid: 406130424b8e92449bd78b5c9f013d75, type: 3}
       propertyPath: _windowBuySpells
       value: 
-      objectReference: {fileID: 1034786184}
+      objectReference: {fileID: 1861408664}
     - target: {fileID: 7300411997486205042, guid: 406130424b8e92449bd78b5c9f013d75, type: 3}
       propertyPath: _spells.Array.size
       value: 1

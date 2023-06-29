@@ -1459,7 +1459,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _health: 40
-  _mana: 400
+  _mana: 80
   _spells:
   - {fileID: -3709253692490153784, guid: b6f3e4ae22c49ac4799bbc895e8c423c, type: 3}
   _spellHand: {fileID: 7140221186427811263}

@@ -5,15 +5,16 @@ using UnityEngine.UI;
 
 public abstract class Spell : MonoBehaviour
 {
-    [SerializeField] protected float manaCost;
-    [SerializeField] protected int levels;
-    [SerializeField] protected int upgradeCost;
-    [SerializeField] protected Sprite icon;
-    [SerializeField] protected Player player;
+    [SerializeField] private float manaCost;
+    [SerializeField] private int levels;
+    [SerializeField] private int upgradeCost;
+    [SerializeField] private Sprite icon;
 
     protected Dictionary<int, string> levelsDescriptions = new Dictionary<int, string>();
 
     protected int currentLevel;
+    protected float currentManaCost;
+
     private float _flyingSpeed = 50;
 
     public Sprite Icon => icon;
@@ -24,11 +25,11 @@ public abstract class Spell : MonoBehaviour
 
     public int CurrentLevel => currentLevel;
 
-    public float ManaCost => manaCost;
+    public float ManaCost => currentManaCost;
 
-    private void OnEnable()
+    private void Awake()
     {
-        SetLevel(player.GetSpellLevel(this));
+        currentManaCost = manaCost;
     }
 
     public abstract void SetLevel(int level);

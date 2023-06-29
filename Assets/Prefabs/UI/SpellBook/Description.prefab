@@ -282,7 +282,7 @@ GameObject:
   - component: {fileID: 6906216324020814403}
   - component: {fileID: 3448447763686206279}
   - component: {fileID: 795638321312719678}
-  - component: {fileID: 2789914240181843121}
+  - component: {fileID: 3090996483976789334}
   m_Layer: 5
   m_Name: Description
   m_TagString: Untagged
@@ -350,7 +350,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 3
---- !u!114 &2789914240181843121
+--- !u!114 &3090996483976789334
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -359,11 +359,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7107990818158347472}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f19e733b144daff42840dff9d9ca7939, type: 3}
+  m_Script: {fileID: 11500000, guid: a9480ddae324f2749b12223c4574838f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _description: {fileID: 2775037027600347146}
-  _priceText: {fileID: 0}
+  _priceText: {fileID: 3351060915772264551}
   _buyButton: {fileID: 3016452895892708399}
 --- !u!1 &7150707436084264709
 GameObject:
@@ -430,8 +430,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u0412\u043E\u0441\u0441\u0442\u0430\u043D\u0430\u0432\u043B\u0438\u0432\u0430\u0435\u0442
-    \u043E\u0447\u043A\u0438 \u043C\u0430\u043D\u044B"
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: e73a58f6e2794ae7b1b7e50b7fb811b0, type: 2}
@@ -566,7 +565,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 25
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: e73a58f6e2794ae7b1b7e50b7fb811b0, type: 2}

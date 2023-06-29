@@ -18,18 +18,25 @@ public class Player : MonoBehaviour
     private Coroutine _deactivator;
     private Spell _currentSpell;
 
-    public float Health => _health;
+    private float _currentMana;
+    private float _currentHealth;
 
-    public float Mana => _mana;
+    public float Health => _currentHealth;
+
+    public float Mana => _currentMana;
 
     public int Rewards { get; private set; }
 
     private void Awake()
     {
+        _currentMana = _mana;
+        _currentHealth = _health;
+    }
+
+    private void Start()
+    {
         _currentSpell = _spells[0];
         _currentSpell.SetLevel(_startSpellLevel);
-
-        Rewards = 200;
     }
 
     private UnityAction _attacking;
@@ -38,7 +45,6 @@ public class Player : MonoBehaviour
     private UnityAction<float> _changedHealth;
     private UnityAction<float> _changedMana;
     private UnityAction<int> _changedRewards;
-    private UnityAction<bool> _trySpellUpgrade;
 
     public event UnityAction OnAttacking
     {
@@ -70,34 +76,12 @@ public class Player : MonoBehaviour
         remove => _changedRewards -= value;
     }
 
-    public event UnityAction<bool> OnTrySpellUpgrade
-    {
-        add => _trySpellUpgrade += value;
-        remove => _trySpellUpgrade -= value;
-    }
-
-    public int GetSpellLevel(Spell spell)
-    {
-        Debug.Log(spell);
-
-        if (_spells.Contains(spell))
-        {
-            Debug.Log(_spells.Find(playerSpell => playerSpell == spell).CurrentLevel);
-
-            return _spells.Find(playerSpell => playerSpell == spell).CurrentLevel;
-        }
-        else
-            Debug.Log("no");
-
-        return _startSpellLevel;
-    }
-
     public void TakeDamage(float damage)
     {
-        _health -= damage;
+        _currentHealth -= damage;
         _changedHealth?.Invoke(Health);
 
-        if (_health <= 0)
+        if (_currentHealth <= 0)
         {
             _died?.Invoke();
 
@@ -110,10 +94,10 @@ public class Player : MonoBehaviour
     {
         RotateToEnemy(enemy);
 
-        if (_mana >= _currentSpell.ManaCost)
+        if (_currentMana >= _currentSpell.ManaCost)
         {
             _attacking?.Invoke();
-            ShootSpell(enemy);
+            CastSpell(enemy);
         }
     }
 
@@ -128,11 +112,11 @@ public class Player : MonoBehaviour
         if (Rewards >= upgrade.Price)
         {
             UpgradeSpell(upgrade.Spell, upgrade.Price, upgrade.Level);
-            _trySpellUpgrade?.Invoke(true);
+            upgrade.SetUpgrade(true);
             return true;
         }
 
-        _trySpellUpgrade?.Invoke(false);
+        upgrade.SetUpgrade(false);
         return false;
     }
 
@@ -160,9 +144,6 @@ public class Player : MonoBehaviour
             _spells.Add(spell);
         }
 
-        Debug.Log(_spells[0].CurrentLevel);
-
-
         Rewards -= cost;
         _changedRewards?.Invoke(Rewards);
     }
@@ -174,13 +155,16 @@ public class Player : MonoBehaviour
         transform.forward = targetDirection;
     }
 
-    private void ShootSpell(Transform target)
+    private void CastSpell(Transform target)
     {
         Spell spell = Instantiate(_currentSpell, _spellHand.position, Quaternion.identity);
-        Debug.Log($"Instantiate {spell.CurrentLevel}");
+        spell.SetLevel(_currentSpell.CurrentLevel);
 
-        _mana -= spell.ManaCost;
+        _currentMana -= spell.ManaCost;
         _changedMana?.Invoke(Mana);
+
+        if (_currentMana >= _mana)
+            _currentMana = _mana;
 
         spell.Fly(target);
     }

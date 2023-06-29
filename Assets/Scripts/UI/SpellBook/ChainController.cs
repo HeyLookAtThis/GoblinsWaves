@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class ChainController : MonoBehaviour
 {
     [SerializeField] private GameObject _container;
-    [SerializeField] private WindowBuySpells _windowBuySpells;
+    [SerializeField] private DescriptionPanel _windowBuySpells;
     [SerializeField] private List<Spell> _spells;
     [SerializeField] private UpgradesChain _spellChain;
     [SerializeField] private Player _player;

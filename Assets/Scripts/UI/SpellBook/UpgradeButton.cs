@@ -8,15 +8,17 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 public class UpgradeButton : MonoBehaviour
 {
-    [SerializeField] private bool _isUpgraded;
     [SerializeField] private Player _player;
 
+    private bool _isUpgraded;
     private Spell _spell;
     private Button _button;
-    private WindowBuySpells _windowBuySpells;
+    private DescriptionPanel _windowBuySpells;
     private int _price;
     private string _description;
     private int _level;
+
+    private UnityAction<UpgradeButton> _upgraded;
 
     public string Description => _description;
 
@@ -36,16 +38,20 @@ public class UpgradeButton : MonoBehaviour
     private void OnEnable()
     {
         _button.onClick.AddListener(ShowSpellInfo);
-        _player.OnTrySpellUpgrade += SetUpgrade;
     }
 
     private void OnDisable()
     {
         _button.onClick.RemoveListener(ShowSpellInfo);
-        _player.OnTrySpellUpgrade -= SetUpgrade;
     }
 
-    public void Initialize(Spell spell, int upgradeLevel, string description, WindowBuySpells spellInfo)
+    public event UnityAction<UpgradeButton> OnUpgraded
+    {
+        add => _upgraded += value;
+        remove => _upgraded -= value;
+    }
+
+    public void Initialize(Spell spell, int upgradeLevel, string description, DescriptionPanel spellInfo)
     {
         _spell = spell;
         _price = _spell.UpgradeCost * upgradeLevel;
@@ -63,6 +69,7 @@ public class UpgradeButton : MonoBehaviour
     public void SetUpgrade(bool upgraded)
     {
         _isUpgraded = upgraded;
+        _upgraded?.Invoke(this);
 
         SetButtonInteractable(upgraded);
         ShowSpellInfo();

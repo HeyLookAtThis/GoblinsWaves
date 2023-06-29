@@ -13,7 +13,7 @@ public class UpgradesChain : MonoBehaviour
 
     private Player _player;
 
-    public void Create(Spell spell, WindowBuySpells spellInfo, Player player)
+    public void Create(Spell spell, DescriptionPanel descriptionPanel, Player player)
     {
         spell.InitializeLevelsDescriptions();
 
@@ -23,26 +23,34 @@ public class UpgradesChain : MonoBehaviour
         {
             UpgradeButton button = Instantiate(_button, transform);            
 
-            button.Initialize(spell, i, spell.ShowLevelDescription(i), spellInfo);
+            button.Initialize(spell, i, spell.ShowLevelDescription(i), descriptionPanel);
 
             if (i < spell.Levels)
                 Instantiate(_image, transform);
 
             button.SetButtonInteractable(false);
 
+            button.OnUpgraded += OpenNextButton;
+
             button.SetUpgrade(_player.CheckSpell(spell, i));
 
             _buttons.Add(button);
         }
-
-        OpenNextButton();
     }
 
-    public void OpenNextButton()
+    private void OpenNextButton(UpgradeButton button)
     {
         for (int i = 0; i < _buttons.Count; i++)
+        {
             if (_buttons[i].IsUpgraded)
-                if (_buttons[i + 1] != null)
+            {
+                _buttons[i].OnUpgraded -= OpenNextButton;
+
+                if (i + 1 < _buttons.Count)
+                {
                     _buttons[i + 1].SetButtonInteractable(true);
+                }
+            }
+        }
     }
 }
