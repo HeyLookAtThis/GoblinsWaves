@@ -101,7 +101,7 @@ public class Enemy : MonoBehaviour, IPointerClickHandler
 
     private IEnumerator Deactivator()
     {
-        float second = 1.0f;
+        float second = 0.5f;
         var waitTime = new WaitForSeconds(second);
         bool isSkeppedTime = false;
 

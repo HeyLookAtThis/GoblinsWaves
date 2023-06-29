@@ -44,7 +44,8 @@ public class EnemyAnimator : MonoBehaviour
 
     private void PlayAttack()
     {
-        _animator.Play(ACSkeleton.State.Attack);
+        if (_enemy.Attacked == false)
+            _animator.Play(ACSkeleton.State.Attack);
     }
 
     private void PlayDying()
