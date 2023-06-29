@@ -28,8 +28,6 @@ public class UpgradesChain : MonoBehaviour
             if (i < spell.Levels)
                 Instantiate(_image, transform);
 
-            button.SetButtonInteractable(false);
-
             button.OnUpgraded += OpenNextButton;
 
             button.SetUpgrade(_player.CheckSpell(spell, i));
@@ -48,7 +46,7 @@ public class UpgradesChain : MonoBehaviour
 
                 if (i + 1 < _buttons.Count)
                 {
-                    _buttons[i + 1].SetButtonInteractable(true);
+                    _buttons[i + 1].SetAvailable(true);
                 }
             }
         }

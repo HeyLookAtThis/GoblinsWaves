@@ -8,9 +8,8 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 public class UpgradeButton : MonoBehaviour
 {
-    [SerializeField] private Player _player;
-
     private bool _isUpgraded;
+    private bool _isAvailable;
     private Spell _spell;
     private Button _button;
     private DescriptionPanel _windowBuySpells;
@@ -26,12 +25,16 @@ public class UpgradeButton : MonoBehaviour
 
     public bool IsUpgraded => _isUpgraded;
 
+    public bool IsAvailable => _isAvailable;
+
+
     public int Level => _level;
 
     public Spell Spell => _spell;
 
     private void Awake()
     {
+        SetAvailable(false);
         _button = GetComponent<Button>();
     }
 
@@ -61,9 +64,9 @@ public class UpgradeButton : MonoBehaviour
         _windowBuySpells = spellInfo;
     }
 
-    public void SetButtonInteractable(bool isInteractable)
+    public void SetAvailable(bool isInteractable)
     {
-        _button.interactable = isInteractable;
+        _isAvailable = isInteractable;
     }
 
     public void SetUpgrade(bool upgraded)
@@ -71,7 +74,11 @@ public class UpgradeButton : MonoBehaviour
         _isUpgraded = upgraded;
         _upgraded?.Invoke(this);
 
-        SetButtonInteractable(upgraded);
+        if (_isUpgraded)
+        {
+            _button.image.color = Color.green;
+        }
+
         ShowSpellInfo();
     }
 

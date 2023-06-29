@@ -6,15 +6,23 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(AudioSource))]
 public class DescriptionPanel : MonoBehaviour
 {
     [SerializeField] private TMP_Text _description;
     [SerializeField] private TMP_Text _priceText;
     [SerializeField] private Button _buyButton;
+    [SerializeField] private AudioClip _buttonSound;
 
     private UpgradeButton _button;
+    private AudioSource _audio;
 
     private UnityAction<UpgradeButton> _transferingUpgradeButton;
+
+    private void Start()
+    {
+        _audio = GetComponent<AudioSource>();
+    }
 
     public event UnityAction<UpgradeButton> OnTransferingUpgradeButton
     {
@@ -38,6 +46,7 @@ public class DescriptionPanel : MonoBehaviour
         _priceText.text = button.Price.ToString();
         _button = button;
 
+        SetBuyButtonAvailabel(button.IsAvailable);
         SetBuyButtonVisible(button);
     }
 
@@ -49,6 +58,11 @@ public class DescriptionPanel : MonoBehaviour
             SetBuyButtonVisible(true);
     }
 
+    private void SetBuyButtonAvailabel(bool iaAvailabel)
+    {
+        _buyButton.interactable = iaAvailabel;
+    }
+
     private void SetBuyButtonVisible(bool isVisible)
     {
         _buyButton.gameObject.SetActive(isVisible);
@@ -58,5 +72,6 @@ public class DescriptionPanel : MonoBehaviour
     private void TransferUpgradeButton()
     {
         _transferingUpgradeButton?.Invoke(_button);
+        _audio.PlayOneShot(_buttonSound);
     }
 }

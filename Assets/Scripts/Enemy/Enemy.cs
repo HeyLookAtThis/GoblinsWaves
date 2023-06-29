@@ -4,14 +4,18 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
+[RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(CapsuleCollider))]
 public class Enemy : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private float _damage;
     [SerializeField] private int _reward;
     [SerializeField] private Transform _spellTarget;
+    [SerializeField] private AudioClip _dieAudio;
+    [SerializeField] private AudioClip _attackAudio;
 
     private CapsuleCollider _capsule;
+    private AudioSource _audioSource;
 
     public bool Attacked { get; private set; }
 
@@ -22,6 +26,7 @@ public class Enemy : MonoBehaviour, IPointerClickHandler
 
     private void Awake()
     {
+        _audioSource= GetComponent<AudioSource>();
         _capsule = GetComponent<CapsuleCollider>();
     }
 
@@ -70,6 +75,7 @@ public class Enemy : MonoBehaviour, IPointerClickHandler
         {
             _attacking?.Invoke();
             Target.TakeDamage(_damage);
+            _audioSource.PlayOneShot(_attackAudio);
         }
     }
 
@@ -79,6 +85,7 @@ public class Enemy : MonoBehaviour, IPointerClickHandler
         _capsule.enabled = false;
         Target.AddReward(_reward);
         StartCoroutine(Deactivator());
+        _audioSource.PlayOneShot(_dieAudio);
     }
 
     public void Destroy()
