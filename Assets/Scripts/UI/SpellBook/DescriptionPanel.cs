@@ -24,7 +24,7 @@ public class DescriptionPanel : MonoBehaviour
         _audio = GetComponent<AudioSource>();
     }
 
-    public event UnityAction<UpgradeButton> OnTransferingUpgradeButton
+    public event UnityAction<UpgradeButton> TransferingUpgradeButton
     {
         add => _transferingUpgradeButton += value;
         remove => _transferingUpgradeButton -= value;

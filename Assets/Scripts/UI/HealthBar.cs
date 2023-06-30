@@ -13,11 +13,11 @@ public class HealthBar : Bar
 
     private void OnEnable()
     {
-        Player.OnChangedHealth += BeginChangeValue;
+        Player.ChangedHealth += OnBeginChangeValue;
     }
 
     private void OnDisable()
     {
-        Player.OnChangedHealth -= BeginChangeValue;
+        Player.ChangedHealth -= OnBeginChangeValue;
     }
 }

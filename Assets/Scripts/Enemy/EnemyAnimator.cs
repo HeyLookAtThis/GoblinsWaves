@@ -24,17 +24,17 @@ public class EnemyAnimator : MonoBehaviour
     private void OnEnable()
     {
         _moveState.OnWalking += PlayWalk;
-        _enemy.OnAttacking += PlayAttack;
-        _enemy.OnDied += PlayDying;
-        _playerDieState.OnCelebrating += PlayCelebrate;
+        _enemy.Attacking += PlayAttack;
+        _enemy.Died += PlayDying;
+        _playerDieState.Celebrating += PlayCelebrate;
     }
 
     private void OnDisable()
     {
         _moveState.OnWalking -= PlayWalk;
-        _enemy.OnAttacking -= PlayAttack;
-        _enemy.OnDied -= PlayDying;
-        _playerDieState.OnCelebrating -= PlayCelebrate;
+        _enemy.Attacking -= PlayAttack;
+        _enemy.Died -= PlayDying;
+        _playerDieState.Celebrating -= PlayCelebrate;
     }
 
     private void PlayWalk(float speed)

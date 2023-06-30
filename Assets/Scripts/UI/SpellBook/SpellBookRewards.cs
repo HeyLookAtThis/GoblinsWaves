@@ -18,21 +18,21 @@ public class SpellBookRewards : MonoBehaviour
 
     private void OnEnable()
     {
-        _player.OnChangedRewards += ShowRewards;
+        _player.ChangedRewards += OnShowRewards;
         _text.text = _player.Rewards.ToString();
     }
 
     private void OnDisable()
     {
-        _player.OnChangedRewards -= ShowRewards;
+        _player.ChangedRewards -= OnShowRewards;
     }
 
     private void Start()
     {
-        ShowRewards(_player.Rewards);
+        OnShowRewards(_player.Rewards);
     }
 
-    private void ShowRewards(int rewards)
+    private void OnShowRewards(int rewards)
     {
         _text.text = rewards.ToString();
     }

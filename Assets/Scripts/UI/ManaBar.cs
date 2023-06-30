@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class ManaBar : Bar
 {
@@ -14,11 +13,11 @@ public class ManaBar : Bar
 
     private void OnEnable()
     {
-        Player.OnChangedMana += BeginChangeValue;
+        Player.ChangedMana += OnBeginChangeValue;
     }
 
     private void OnDisable()
     {
-        Player.OnChangedMana -= BeginChangeValue;
+        Player.ChangedMana -= OnBeginChangeValue;
     }
 }

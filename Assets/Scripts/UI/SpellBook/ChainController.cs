@@ -19,12 +19,12 @@ public class ChainController : MonoBehaviour
 
     private void OnEnable()
     {
-        _windowBuySpells.OnTransferingUpgradeButton += UpgradeSpell;
+        _windowBuySpells.TransferingUpgradeButton += OnUpgradeSpell;
     }
 
     private void OnDisable()
     {
-        _windowBuySpells.OnTransferingUpgradeButton -= UpgradeSpell;
+        _windowBuySpells.TransferingUpgradeButton -= OnUpgradeSpell;
     }
 
     private void CreateChains()
@@ -33,7 +33,7 @@ public class ChainController : MonoBehaviour
             Instantiate(_spellChain, _container.transform).Create(spell, _windowBuySpells, _player);
     }
 
-    private void UpgradeSpell(UpgradeButton upgrade)
+    private void OnUpgradeSpell(UpgradeButton upgrade)
     {
         _player.TryUpgradeSpell(upgrade);
     }

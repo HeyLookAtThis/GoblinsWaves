@@ -17,22 +17,22 @@ public class PlayerAnimator : MonoBehaviour
 
     private void OnEnable()
     {
-        _player.OnAttacking += SetShotTrigger;
-        _player.OnDied += PlayDeath;
+        _player.Attacking += OnSetShotTrigger;
+        _player.Died += OnPlayDeath;
     }
 
     private void OnDisable()
     {
-        _player.OnAttacking -= SetShotTrigger;
-        _player.OnDied -= PlayDeath;
+        _player.Attacking -= OnSetShotTrigger;
+        _player.Died -= OnPlayDeath;
     }
 
-    private void SetShotTrigger()
+    private void OnSetShotTrigger()
     {
         _animator.SetTrigger(ACPlayer.Params.Shot);
     }
 
-    private void PlayDeath()
+    private void OnPlayDeath()
     {
         _animator.Play(ACPlayer.State.Death);
     }

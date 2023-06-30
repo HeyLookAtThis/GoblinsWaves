@@ -24,6 +24,43 @@ public class Player : MonoBehaviour
 
     public int Rewards { get; private set; }
 
+    private UnityAction _attacking;
+    private UnityAction _died;
+
+    private UnityAction<float> _changedHealth;
+    private UnityAction<float> _changedMana;
+    private UnityAction<int> _changedRewards;
+
+    public event UnityAction Attacking
+    {
+        add => _attacking += value;
+        remove => _attacking -= value;
+    }
+
+    public event UnityAction Died
+    {
+        add => _died += value;
+        remove => _died -= value;
+    }
+
+    public event UnityAction<float> ChangedHealth
+    {
+        add => _changedHealth += value;
+        remove => _changedHealth -= value;
+    }
+
+    public event UnityAction<float> ChangedMana
+    {
+        add => _changedMana += value;
+        remove => _changedMana -= value;
+    }
+
+    public event UnityAction<int> ChangedRewards
+    {
+        add => _changedRewards += value;
+        remove => _changedRewards -= value;
+    }
+
     private void Awake()
     {
         _currentMana = _mana;
@@ -34,43 +71,6 @@ public class Player : MonoBehaviour
     {
         _currentSpell = _spells[0];
         _currentSpell.SetLevel(_startSpellLevel);
-    }
-
-    private UnityAction _attacking;
-    private UnityAction _died;
-
-    private UnityAction<float> _changedHealth;
-    private UnityAction<float> _changedMana;
-    private UnityAction<int> _changedRewards;
-
-    public event UnityAction OnAttacking
-    {
-        add => _attacking += value;
-        remove => _attacking -= value;
-    }
-
-    public event UnityAction OnDied
-    {
-        add => _died += value;
-        remove => _died -= value;
-    }
-
-    public event UnityAction<float> OnChangedHealth
-    {
-        add => _changedHealth += value;
-        remove => _changedHealth -= value;
-    }
-
-    public event UnityAction<float> OnChangedMana
-    {
-        add => _changedMana += value;
-        remove => _changedMana -= value;
-    }
-
-    public event UnityAction<int> OnChangedRewards
-    {
-        add => _changedRewards += value;
-        remove => _changedRewards -= value;
     }
 
     public void TakeDamage(float damage)

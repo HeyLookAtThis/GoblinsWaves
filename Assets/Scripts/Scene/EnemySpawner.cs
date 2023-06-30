@@ -21,9 +21,21 @@ public class EnemySpawner : EnemyPool
     private UnityAction<int> _setWave;
     private UnityAction _allEnemiesSpawned;
 
+    public event UnityAction AllEnemiesDied
+    {
+        add => _allEnemiesSpawned += value;
+        remove => _allEnemiesSpawned -= value;
+    }
+
+    public event UnityAction<int> SetWave
+    {
+        add => _setWave += value;
+        remove => _setWave -= value;
+    }
+
     private void Start()
     {
-        SetWave(_currentWaveNumber);
+        SetCurrentWave(_currentWaveNumber);
         Initialize(_currentWave.Enemy);
     }
 
@@ -56,21 +68,9 @@ public class EnemySpawner : EnemyPool
         }
     }
 
-    public event UnityAction OnAllEnemiesDied
-    {
-        add => _allEnemiesSpawned += value;
-        remove => _allEnemiesSpawned -= value;
-    }
-
-    public event UnityAction<int> OnSetWave
-    {
-        add => _setWave += value;
-        remove => _setWave -= value;
-    }
-
     public void SetNextWave()
     {
-        SetWave(++_currentWaveNumber);
+        SetCurrentWave(++_currentWaveNumber);
         Initialize(_currentWave.Enemy);
         _spawnedEnemiesCount = 0;
     }
@@ -109,7 +109,7 @@ public class EnemySpawner : EnemyPool
         enemy.transform.position = position;
     }
 
-    private void SetWave(int index)
+    private void SetCurrentWave(int index)
     {
         _currentWave = _waves[index];
         SetCapacity(_currentWave.AmountEnemiesOnScene);

@@ -10,22 +10,22 @@ public class NextWave : MonoBehaviour
 
     private void OnEnable()
     {
-        _spawner.OnAllEnemiesDied += SetActive;
-        _nextWaveButton.onClick.AddListener(SetNextWave);
+        _spawner.AllEnemiesDied += OnSetActive;
+        _nextWaveButton.onClick.AddListener(OnSetNextWave);
     }
 
     private void OnDisable()
     {
-        _spawner.OnAllEnemiesDied -= SetActive;
-        _nextWaveButton.onClick.RemoveListener(SetNextWave);
+        _spawner.AllEnemiesDied -= OnSetActive;
+        _nextWaveButton.onClick.RemoveListener(OnSetNextWave);
     }
 
-    private void SetActive()
+    private void OnSetActive()
     {
         _nextWaveButton.gameObject.SetActive(true);
     }
 
-    private void SetNextWave()
+    private void OnSetNextWave()
     {
         _spawner.SetNextWave();
         _nextWaveButton.gameObject.SetActive(false);

@@ -8,7 +8,7 @@ public class PlayerDieState : State
 {
     private UnityAction _celebrating;
 
-    public event UnityAction OnCelebrating
+    public event UnityAction Celebrating
     {
         add => _celebrating += value;
         remove => _celebrating -= value;

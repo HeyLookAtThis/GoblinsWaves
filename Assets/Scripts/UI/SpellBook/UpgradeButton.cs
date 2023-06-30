@@ -32,6 +32,12 @@ public class UpgradeButton : MonoBehaviour
 
     public Spell Spell => _spell;
 
+    public event UnityAction<UpgradeButton> Upgraded
+    {
+        add => _upgraded += value;
+        remove => _upgraded -= value;
+    }
+
     private void Awake()
     {
         SetAvailable(false);
@@ -40,18 +46,12 @@ public class UpgradeButton : MonoBehaviour
 
     private void OnEnable()
     {
-        _button.onClick.AddListener(ShowSpellInfo);
+        _button.onClick.AddListener(OnShowSpellInfo);
     }
 
     private void OnDisable()
     {
-        _button.onClick.RemoveListener(ShowSpellInfo);
-    }
-
-    public event UnityAction<UpgradeButton> OnUpgraded
-    {
-        add => _upgraded += value;
-        remove => _upgraded -= value;
+        _button.onClick.RemoveListener(OnShowSpellInfo);
     }
 
     public void Initialize(Spell spell, int upgradeLevel, string description, DescriptionPanel spellInfo)
@@ -79,10 +79,10 @@ public class UpgradeButton : MonoBehaviour
             _button.image.color = Color.green;
         }
 
-        ShowSpellInfo();
+        OnShowSpellInfo();
     }
 
-    private void ShowSpellInfo()
+    private void OnShowSpellInfo()
     {
         _windowBuySpells.SetInfo(this);
     }

@@ -17,27 +17,27 @@ public class ProgressBar : Bar
 
     private void OnEnable()
     {
-        _spawner.OnSetWave += SetDefaultState;
-        Player.OnAttacking += SetNextValue;
+        _spawner.SetWave += OnSetDefaultState;
+        Player.Attacking += OnSetNextValue;
     }
 
     private void OnDisable()
     {
-        _spawner.OnSetWave -= SetDefaultState;
-        Player.OnAttacking -= SetNextValue;
+        _spawner.SetWave -= OnSetDefaultState;
+        Player.Attacking -= OnSetNextValue;
     }
 
-    private void SetDefaultState(int enemyCount)
+    private void OnSetDefaultState(int enemyCount)
     {
         Slider.value = 0;
         _targetValue = 0;
         _step = Slider.maxValue / enemyCount;
     }
 
-    private void SetNextValue()
+    private void OnSetNextValue()
     {
         _targetValue += _step;
 
-        BeginChangeValue(_targetValue);
+        OnBeginChangeValue(_targetValue);
     }
 }

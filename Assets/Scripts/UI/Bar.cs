@@ -1,29 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Slider))]
 public abstract class Bar : MonoBehaviour
 {
-    [SerializeField] protected Player Player;
+    [SerializeField] private Player _player;
 
-    protected Slider Slider;
     protected float Speed = 0.5f;
+    protected Slider Slider;
+    
+    private Coroutine _volumeChangerCoroutine;
 
-    private Coroutine _volumeChanger;
+    public Player Player => _player;
 
     private void Awake()
     {
         Slider = GetComponent<Slider>();
     }
 
-    protected void BeginChangeValue(float newValue)
+    protected void OnBeginChangeValue(float newValue)
     {
-        if (_volumeChanger != null)
-            StopCoroutine(_volumeChanger);
+        if (_volumeChangerCoroutine != null)
+            StopCoroutine(_volumeChangerCoroutine);
 
-        _volumeChanger = StartCoroutine(VolumeChanger(newValue));
+        _volumeChangerCoroutine = StartCoroutine(VolumeChanger(newValue));
     }
 
     private IEnumerator VolumeChanger(float newValue)

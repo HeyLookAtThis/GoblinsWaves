@@ -23,12 +23,12 @@ public class RewardsBoard : MonoBehaviour
 
     private void OnEnable()
     {
-        _player.OnChangedRewards += BeginChangeText;
+        _player.ChangedRewards += OnBeginChangeText;
     }
 
     private void OnDisable()
     {
-        _player.OnChangedRewards -= BeginChangeText;
+        _player.ChangedRewards -= OnBeginChangeText;
     }
 
     private void Start()
@@ -37,7 +37,7 @@ public class RewardsBoard : MonoBehaviour
         _board.text = _player.Rewards.ToString();
     }
 
-    private void BeginChangeText(int targetValue)
+    private void OnBeginChangeText(int targetValue)
     {
         if (_textChanger != null)
             StopCoroutine(_textChanger);

@@ -24,6 +24,18 @@ public class Enemy : MonoBehaviour, IPointerClickHandler
     private UnityAction _died;
     private UnityAction _attacking;
 
+    public event UnityAction Died
+    {
+        add => _died += value;
+        remove => _died -= value;
+    }
+
+    public event UnityAction Attacking
+    {
+        add => _attacking += value;
+        remove => _attacking -= value;
+    }
+
     private void Awake()
     {
         _audioSource= GetComponent<AudioSource>();
@@ -39,18 +51,6 @@ public class Enemy : MonoBehaviour, IPointerClickHandler
     private void FixedUpdate()
     {
         LookAtTarget();
-    }
-
-    public event UnityAction OnDied
-    {
-        add => _died += value;
-        remove => _died -= value;
-    }
-
-    public event UnityAction OnAttacking
-    {
-        add => _attacking += value;
-        remove => _attacking -= value;
     }
 
     public void OnPointerClick(PointerEventData eventData)
